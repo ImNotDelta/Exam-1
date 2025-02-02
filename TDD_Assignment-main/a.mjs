@@ -19,7 +19,14 @@ import test from "./test.mjs";
 
 //#region function -----------------------------------------------------------------
 // Write your function her.
+function multiply(...args) {
+    
+    if (args.some(arg => isNaN(Number(arg)))) {
+        return NaN;
+    }
 
+    return args.reduce((product, current) => product * Number(current), 1);
+}
 
 
 //#endregion
@@ -30,7 +37,18 @@ import test from "./test.mjs";
 
 //#region Tests --------------------------------------------------------------------
 // Write your tests her.
+const tests = test ("Multiply function");
 
+// Valid tests
+tests.isEqual(multiply(2, 5), 10, "2 multiplied by 5 should be 10");
+tests.isEqual(multiply("4", 2), 8, "4 multiplied by 2 should be 8");
 
+// Invalid tests
+tests.isNotANumber(multiply("Hey", 2), "If it's not a number it should return as NaN");
 
+// Edge case
+tests.isEqual(multiply(Infinity, 1), Infinity, "Infinity multiplied by 1 should be infinity");
+tests.isEqual(multiply(-Infinity, 2), -Infinity, "-Infinity multiplied by 2 should be -infinity");
+tests.isEqual(multiply(2, 0), 0, "2 multiplied by 0 should be 0");
+tests.isEqual(multiply(), 1, "If empty it should return as 1");
 //#endregion

@@ -19,7 +19,18 @@ import test from "./test.mjs";
 
 //#region function -----------------------------------------------------------------
 // Write your function her.
+function formatName(name) {
+    if (typeof name !== "string") {
+        return null;
+    }
+    if (/[^a-zA-Z0-9\s]/.test(name)) {
+        return null;
+    }
+    
+    let str = name.trim().split(/\s+/).filter(word => word.length > 0);
 
+    return str.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
+}
 
 
 //#endregion
@@ -31,6 +42,18 @@ import test from "./test.mjs";
 //#region Tests --------------------------------------------------------------------
 // Write your tests her.
 
+const tests = test("Format name function");
 
+// Valid tests
+tests.isEqual(formatName("mina thai"),"Mina Thai", "End result should be 'Mina Thai'");
+tests.isEqual(formatName(" Christoffer Walther "), "Christoffer Walther", "End result should be 'Christoffer Walther'");
+tests.isEqual(formatName("1"), "1", "End result should be '1'");
+
+// Invalid tests
+tests.isEqual(formatName(2), null, "Result should be null");
+tests.isEqual(formatName("mina@thai"), null, "Result should be null");
+
+// Edge Case
+tests.isEqual(formatName(" "), "", "Result should be ''");
 
 //#endregion
